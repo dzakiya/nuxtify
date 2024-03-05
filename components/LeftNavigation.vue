@@ -1,12 +1,12 @@
 <template>
-    <v-navigation-drawer permanent
+    <v-navigation-drawer color="primary" 
         rail>
         <v-list
           density="compact"
           nav
         >
         <v-list-item prepend-icon="$vuetify"></v-list-item>
-        <v-list-item prepend-icon="mdi-cube-outline" to="/content/data-pegawai"></v-list-item>
+        <v-list-item prepend-icon="mdi-cube-outline" to="/content/data-pegawai1"></v-list-item>
         <v-list-item prepend-icon="mdi-cog" to="/setting"></v-list-item>
         <v-list-item prepend-icon="mdi-logout"></v-list-item>
         <v-list-item prepend-icon="mdi-alert"></v-list-item>

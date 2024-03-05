@@ -16,9 +16,9 @@
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" prepend-icon="mdi-home">Modul Kepegawaian</v-list-item>
           </template>
-          <v-list-item prepend-icon="mdi-table-account" to="/content/data-pegawai" title="Data Pegawai 1"></v-list-item>
-          <v-list-item prepend-icon="mdi-table-account" to="/content/data-pegawai" title="Data Pegawai 2"></v-list-item>
-          <v-list-item prepend-icon="mdi-table-account" to="/content/data-pegawai" title="Data Pegawai 3"></v-list-item>
+          <v-list-item prepend-icon="mdi-table-account" to="/content/data-pegawai1" title="Data Pegawai 1"></v-list-item>
+          <v-list-item prepend-icon="mdi-table-account" to="/content/data-pegawai2" title="Data Pegawai 2"></v-list-item>
+          <v-list-item prepend-icon="mdi-table-account" to="/content/data-pegawai3" title="Data Pegawai 3"></v-list-item>
         </v-list-group>
       </v-list-group>
       </v-list>
