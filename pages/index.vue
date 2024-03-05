@@ -33,6 +33,8 @@
   <script>
   
   //https://vuetifyjs.com/en/components/data-tables/server-side-tables/#server-side-search
+
+  const {loading, loadingTitle, hideLoading} = useLoading()
   
     const desserts = [
       {
