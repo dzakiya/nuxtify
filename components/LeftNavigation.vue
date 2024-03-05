@@ -1,11 +1,17 @@
 <template>
-    <v-navigation-drawer model-value class="pt-4" rail>
-        <v-btn icon="$vuetify" class="d-block text-center mx-auto mb-9"></v-btn>
-        <NuxtLink to="/content/data-pegawai"><v-btn icon="mdi-cube-outline" class="d-block text-center mx-auto mb-9"></v-btn></NuxtLink>
-        <NuxtLink to="/setting"><v-btn icon="mdi-cog" class="d-block text-center mx-auto mb-9"></v-btn></NuxtLink>
-        <v-btn icon="mdi-logout" class="d-block text-center mx-auto mb-9"></v-btn>
-
-        <v-btn icon="mdi-alert" class="d-block text-center mx-auto mb-9"></v-btn>
-        <v-btn icon="mdi-account" class="d-block text-center mx-auto mb-9"></v-btn>
+    <v-navigation-drawer permanent
+        rail>
+        <v-list
+          density="compact"
+          nav
+        >
+        <v-list-item prepend-icon="$vuetify"></v-list-item>
+        <v-list-item prepend-icon="mdi-cube-outline" to="/content/data-pegawai"></v-list-item>
+        <v-list-item prepend-icon="mdi-cog" to="/setting"></v-list-item>
+        <v-list-item prepend-icon="mdi-logout"></v-list-item>
+        <v-list-item prepend-icon="mdi-alert"></v-list-item>
+        <v-divider></v-divider>
+        <v-list-item prepend-icon="mdi-account"></v-list-item>
+        </v-list>
     </v-navigation-drawer>
 </template>

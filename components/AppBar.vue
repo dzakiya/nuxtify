@@ -1,6 +1,6 @@
 <template>
   <!--Bagian Atas-->
-  <v-app-bar :elevation="1">
+  <v-app-bar :elevation="1" color="primary">
     <template v-slot:prepend>
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
     </template>
@@ -160,6 +160,7 @@ export default {
     notifications: false,
     sound: true,
     widgets: false,
+  
   }),
 }
 </script>
