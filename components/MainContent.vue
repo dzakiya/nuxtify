@@ -1,7 +1,7 @@
 <template>
     <v-main>
 <v-container>
-   <RouterView />
+   <NuxtPage />
 </v-container>
    </v-main>
 </template>
