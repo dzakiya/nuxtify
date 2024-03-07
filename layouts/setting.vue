@@ -1,8 +1,7 @@
 <template>
     <v-app>
-     <LeftNavigation />
-     <SettingNavigation />
-     <AppBar />
-     <MainContent />
+        <LeftNavigation />
+        <NavAppBar2 />
+        <MainContent />  
     </v-app>
-  </template>
+</template>

@@ -1,5 +1,5 @@
 <template>
-   <v-btn>TOMBOL</v-btn>
+   <v-btn to="/content/data-ppi">TOMBOL</v-btn>
 </template>
 
 
