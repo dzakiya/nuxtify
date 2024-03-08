@@ -4,6 +4,11 @@ https://vuelidate-next.netlify.app/#installation
 -->
 
 <template>
+  <v-card
+      title="Settings"
+      flat
+    >
+    <v-card>
   <form>
     <v-text-field
       v-model="state.name"
@@ -46,13 +51,16 @@ https://vuelidate-next.netlify.app/#installation
     <v-btn
       class="me-4"
       @click="v$.$validate"
+      color="success"
     >
       submit
     </v-btn>
-    <v-btn @click="clear">
+    <v-btn @click="clear" color="warning">
       clear
     </v-btn>
   </form>
+</v-card>
+  </v-card>
 </template>
 
 <script setup>

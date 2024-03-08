@@ -1,10 +1,15 @@
 <template>
+  <v-card
+      title="Webhooks"
+      flat
+    >
     <v-data-table
       v-model="selected"
       :items="items"
       item-value="name"
       show-select
     ></v-data-table>
+    </v-card>
   </template>
 
 <script>

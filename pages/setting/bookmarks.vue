@@ -1,6 +1,10 @@
 <!--https://vuetifyjs.com/en/components/data-tables/basics/#loading-slot -->
 
 <template>
+    <v-card
+      title="Bookmarks"
+      flat
+    >
     <div class="text-center">
       <v-btn
         :disabled="loading"
@@ -16,6 +20,7 @@
         <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
       </template>
     </v-data-table>
+    </v-card>
   </template>
 
 <script>

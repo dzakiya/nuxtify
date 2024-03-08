@@ -1,4 +1,8 @@
 <template>
+    <v-card
+      title="Appearance"
+      flat
+    >
   <v-sheet class="mx-auto" width="300">
 
     <v-form ref="form">
@@ -55,6 +59,7 @@
       </div>
     </v-form>
   </v-sheet>
+  </v-card>
 </template>
 
 <script>

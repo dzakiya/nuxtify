@@ -6,8 +6,8 @@
     <v-responsive class="mx-auto" max-width="320">
       <v-text-field label="" variant="outlined" placeholder="Search Collections..."></v-text-field></v-responsive>
     <v-divider></v-divider>
-    <v-list v-model:opened="buka1"> <!--START-->
 
+    <v-list v-model:opened="buka1"> <!--START-->
       <v-list-group value="Kepegawaian">
         <template v-slot:activator="{ props }">
           <v-list-item v-bind="props" prepend-icon="mdi-home">Kepegawaian</v-list-item>
@@ -103,6 +103,7 @@
       </v-list-group>
       </v-list>
     <!--END-->
+    
   </v-navigation-drawer>
 
 </template>

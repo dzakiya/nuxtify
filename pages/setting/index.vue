@@ -1,5 +1,9 @@
 <template>
     <!--Expansion Panels-->
+    <v-card
+      title="Data Model"
+      flat
+    >
         <div>
             <div class="text-subtitle-2 mb-2">Default</div>
             <v-expansion-panels>
@@ -30,6 +34,7 @@
             </v-expansion-panels>
         </div>
     <!--End of Expansion Panels-->
+    </v-card>
 </template>
 
 <script setup>

@@ -1,4 +1,8 @@
 <template>
+    <v-card
+      title="Access Control"
+      flat
+    >
     <v-table>
       <thead>
         <tr>
@@ -20,6 +24,7 @@
         </tr>
       </tbody>
     </v-table>
+  </v-card>
   </template>
 
 <script>

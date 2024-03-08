@@ -1,4 +1,8 @@
 <template>
+  <v-card
+      title="Translations"
+      flat
+    >
     <v-container>
       <v-row align="center" justify="center">
         <v-col
@@ -64,6 +68,7 @@
         </v-col>
       </v-row>
     </v-container>
+    </v-card>
   </template>
 
 <script setup>
