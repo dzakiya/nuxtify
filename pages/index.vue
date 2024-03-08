@@ -31,6 +31,10 @@
   </template>
   
   <script>
+
+  definePageMeta ({
+    layout : 'trial'
+  })
   
   //https://vuetifyjs.com/en/components/data-tables/server-side-tables/#server-side-search
 

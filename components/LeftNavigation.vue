@@ -12,6 +12,7 @@
         <v-list-item prepend-icon="mdi-alert" to="/users"></v-list-item>
         <v-divider></v-divider>
         <v-list-item prepend-icon="mdi-account" to="/cobaresize"></v-list-item>
+        <v-list-item prepend-icon="mdi-home" to="/"></v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>
