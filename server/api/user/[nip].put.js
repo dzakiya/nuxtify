@@ -1,5 +1,7 @@
 import knex from '../../koneksi'; // koneksi db 
 
+
+//BERHASIL
 export default defineEventHandler(async (event) => {
 
   //const nip = getRouterParams(event, 'nip');
