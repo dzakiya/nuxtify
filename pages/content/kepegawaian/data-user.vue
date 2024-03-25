@@ -170,7 +170,7 @@ const inputAktif = ref(0);
 
 const isUpdate = ref(false);
 
-const getAllProduk = async () => { // copas dari https://axios-http.com/docs/example
+const getAllUser = async () => { // copas dari https://axios-http.com/docs/example
   try {
     const response = await axios.get(url + "/api/user");
     console.log(response); //cek datanya sudah masuk di console / belum
@@ -191,6 +191,7 @@ const hapusInput = () => {
   inputKdUnit = 0;
   inputDepartemen = "";
   inputStDokterRajalEksekutif = 0;
+  inputStDokterRajalReguler = 0;
   inputStDokterRajalEmergency = 0;
   inputNipb = "";
   inputAktif = 0;
@@ -202,19 +203,44 @@ const onHandleSubmit = async () => {
   try {
     if (isUpdate.value == false) {
       await axios.post(url + "/api/user", {
-        product_name: inputNamaproduk.value,
-        product_price: inputHargaproduk.value
+        nip : inputNip.value,
+        pwd : inputPwd.value,
+        ses_reg : inputSesReg.value,
+        kdperawat : inputKdPerawat.value,
+        kddokter : inputKdDokter.value,
+        nama_pegawai : inputNamaPegawai.value,
+        roles : inputRoles.value,
+        kdunit : inputKdUnit.value,
+        departemen : inputDepartemen.value,
+        st_dokter_rajal_eksekutif : inputStDokterRajalEksekutif.value,
+        st_dokter_rajal_reguler : inputStDokterRajalReguler.value,
+        st_dokter_rajal_emergency : inputStDokterRajalEmergency.value,
+        nipb : inputNipb.value,
+        aktif : inputAktif.value
+
       });
-      alert("berhasil tambah produk baru");
+      alert("berhasil tambah user baru");
     } else {
       await axios.put(url + "/api/user/" + idProduk.value, {
-        product_name: inputNamaproduk.value,
-        product_price: inputHargaproduk.value,
+        nip : inputNip.value,
+        pwd : inputPwd.value,
+        ses_reg : inputSesReg.value,
+        kdperawat : inputKdPerawat.value,
+        kddokter : inputKdDokter.value,
+        nama_pegawai : inputNamaPegawai.value,
+        roles : inputRoles.value,
+        kdunit : inputKdUnit.value,
+        departemen : inputDepartemen.value,
+        st_dokter_rajal_eksekutif : inputStDokterRajalEksekutif.value,
+        st_dokter_rajal_reguler : inputStDokterRajalReguler.value,
+        st_dokter_rajal_emergency : inputStDokterRajalEmergency.value,
+        nipb : inputNipb.value,
+        aktif : inputAktif.value
       });
-      alert("berhasil update data produk");
+      alert("berhasil update data user");
     }
     hapusInput();
-    getAllProduk();
+    getAllUser();
   } catch (error) {
     console.log(error);
   }
