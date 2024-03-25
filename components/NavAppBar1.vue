@@ -21,8 +21,8 @@
                     </template>
                     <v-list-item prepend-icon="mdi-table-account" to="/content/kepegawaian/data-pegawai1"
                         title="Data Pegawai 1" color="primary" rounded="xl"></v-list-item>
-                    <v-list-item prepend-icon="mdi-table-account" to="/content/kepegawaian/data-pegawai2"
-                        title="Data Pegawai 2" color="primary" rounded="xl"></v-list-item>
+                    <v-list-item prepend-icon="mdi-table-account" to="/content/kepegawaian/data-user"
+                        title="Data User SIM RS" color="primary" rounded="xl"></v-list-item>
                     <v-list-item prepend-icon="mdi-table-account" to="/content/kepegawaian/data-pegawai3"
                         title="Data Pegawai 3" color="primary" rounded="xl"></v-list-item>
                 </v-list-group>

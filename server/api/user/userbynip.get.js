@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   try {
     const userbyID = await knex('m_login').select('*').where('nip', nip); //by nip
     return {
-      statusCode: 201,
+      statusCode: 200,
       body: userbyID,
       message: 'Data user berhasil ditemukan'
     };

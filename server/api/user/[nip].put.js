@@ -35,11 +35,11 @@ export default defineEventHandler(async (event) => {
        
       //Query UPDATE dengan Knex
   try {
-    const [user] = await knex('m_login').where('nip', 'coba@simrs').update(
+    const [user] = await knex('m_login').where('nip', nip).update(
        data,
           "*"
     );
-    return { statusCode: 201, body: user, message: 'Data user berhasil diperbarui' };
+    return { statusCode: 200, body: user, message: 'Data user berhasil diperbarui' };
   } catch (error) {
     throw createError({ statusCode: 500, message: error.message });
   }
