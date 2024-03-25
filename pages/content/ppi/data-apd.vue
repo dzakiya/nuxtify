@@ -1,150 +1,305 @@
 <template>
-    <v-card
-         title="Data APD"
-         flat
-       >
-       <v-data-table
-         :custom-filter="filterOnlyCapsText"
-         :headers="headers"
-         :items="items"
-         :search="search"
-         item-value="name"
-       >
-         <template v-slot:top>
-           <v-text-field
-             v-model="search"
-             class="pa-2"
-             label="Search (UPPER CASE ONLY)"
-           ></v-text-field>
-         </template>
-       </v-data-table>
-    </v-card>
-     </template>
-     <script>
-       export default {
-         data: () => ({
-           search: '',
-           headers: [
-             {
-               title: 'CPU Model',
-               align: 'start',
-               key: 'name',
-             },
-             {
-               title: 'Cores',
-               align: 'end',
-               key: 'cores',
-             },
-             {
-               title: 'Threads',
-               align: 'end',
-               key: 'threads',
-             },
-             {
-               title: 'Base Clock',
-               align: 'end',
-               key: 'baseClock',
-             },
-             {
-               title: 'Boost Clock',
-               align: 'end',
-               key: 'boostClock',
-             },
-             {
-               title: 'TDP (W)',
-               align: 'end',
-               key: 'tdp',
-             },
-           ],
-           items: [
-             {
-               name: 'Intel Core i9-11900K',
-               cores: 8,
-               threads: 16,
-               baseClock: '3.5 GHz',
-               boostClock: '5.3 GHz',
-               tdp: '125W',
-             },
-             {
-               name: 'AMD Ryzen 9 5950X',
-               cores: 16,
-               threads: 32,
-               baseClock: '3.4 GHz',
-               boostClock: '4.9 GHz',
-               tdp: '105W',
-             },
-             {
-               name: 'Intel Core i7-10700K',
-               cores: 8,
-               threads: 16,
-               baseClock: '3.8 GHz',
-               boostClock: '5.1 GHz',
-               tdp: '125W',
-             },
-             {
-               name: 'AMD Ryzen 5 5600X',
-               cores: 6,
-               threads: 12,
-               baseClock: '3.7 GHz',
-               boostClock: '4.6 GHz',
-               tdp: '65W',
-             },
-             {
-               name: 'Intel Core i5-10600K',
-               cores: 6,
-               threads: 12,
-               baseClock: '4.1 GHz',
-               boostClock: '4.8 GHz',
-               tdp: '125W',
-             },
-             {
-               name: 'AMD Ryzen 7 5800X',
-               cores: 8,
-               threads: 16,
-               baseClock: '3.8 GHz',
-               boostClock: '4.7 GHz',
-               tdp: '105W',
-             },
-             {
-               name: 'Intel Core i3-10100',
-               cores: 4,
-               threads: 8,
-               baseClock: '3.6 GHz',
-               boostClock: '4.3 GHz',
-               tdp: '65W',
-             },
-             {
-               name: 'AMD Ryzen 3 3300X',
-               cores: 4,
-               threads: 8,
-               baseClock: '3.8 GHz',
-               boostClock: '4.3 GHz',
-               tdp: '65W',
-             },
-             {
-               name: 'Intel Pentium Gold G6400',
-               cores: 2,
-               threads: 4,
-               baseClock: '4.0 GHz',
-               tdp: '58W',
-             },
-             {
-               name: 'AMD Athlon 3000G',
-               cores: 2,
-               threads: 4,
-               baseClock: '3.5 GHz',
-               tdp: '35W',
-             },
-           ],
-         }),
-     
-         methods: {
-           filterOnlyCapsText (value, query, item) {
-             return value != null &&
-               query != null &&
-               typeof value === 'string' &&
-               value.toString().toLocaleUpperCase().indexOf(query) !== -1
-           },
-         },
-       }
-     </script>
+  <v-data-table
+    :headers="headers"
+    :items="desserts"
+    :sort-by="[{ key: 'calories', order: 'asc' }]"
+  >
+    <template v-slot:top>
+      <v-toolbar
+        flat
+      >
+        <v-toolbar-title>My CRUD</v-toolbar-title>
+        <v-divider
+          class="mx-4"
+          inset
+          vertical
+        ></v-divider>
+        <v-spacer></v-spacer>
+        <v-dialog
+          v-model="dialog"
+          max-width="500px"
+        >
+          <template v-slot:activator="{ props }">
+            <v-btn
+              class="mb-2"
+              color="primary"
+              dark
+              v-bind="props"
+            >
+              New Item
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">{{ formTitle }}</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    md="4"
+                    sm="6"
+                  >
+                    <v-text-field
+                      v-model="editedItem.name"
+                      label="Dessert name"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="4"
+                    sm="6"
+                  >
+                    <v-text-field
+                      v-model="editedItem.calories"
+                      label="Calories"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="4"
+                    sm="6"
+                  >
+                    <v-text-field
+                      v-model="editedItem.fat"
+                      label="Fat (g)"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="4"
+                    sm="6"
+                  >
+                    <v-text-field
+                      v-model="editedItem.carbs"
+                      label="Carbs (g)"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="4"
+                    sm="6"
+                  >
+                    <v-text-field
+                      v-model="editedItem.protein"
+                      label="Protein (g)"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue-darken-1"
+                variant="text"
+                @click="close"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                color="blue-darken-1"
+                variant="text"
+                @click="save"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-card>
+            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
+              <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <v-icon
+        class="me-2"
+        size="small"
+        @click="editItem(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+        size="small"
+        @click="deleteItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+    <template v-slot:no-data>
+      <v-btn
+        color="primary"
+        @click="initialize"
+      >
+        Reset
+      </v-btn>
+    </template>
+  </v-data-table>
+</template>
+<script setup>
+  import { computed, nextTick, ref, watch } from 'vue'
+
+  const dialog = ref(false)
+  const dialogDelete = ref(false)
+  const headers = ref([
+    {
+      title: 'Dessert (100g serving)',
+      align: 'start',
+      sortable: false,
+      key: 'name',
+    },
+    { title: 'Calories', key: 'calories' },
+    { title: 'Fat (g)', key: 'fat' },
+    { title: 'Carbs (g)', key: 'carbs' },
+    { title: 'Protein (g)', key: 'protein' },
+    { title: 'Actions', key: 'actions', sortable: false },
+  ])
+  const desserts = ref([])
+  const editedIndex = ref(-1)
+  const editedItem = ref({
+    name: '',
+    calories: 0,
+    fat: 0,
+    carbs: 0,
+    protein: 0,
+  })
+  const defaultItem = ref({
+    name: '',
+    calories: 0,
+    fat: 0,
+    carbs: 0,
+    protein: 0,
+  })
+  const formTitle = computed(() => {
+    return editedIndex.value === -1 ? 'New Item' : 'Edit Item'
+  })
+  function initialize () {
+    desserts.value = [
+      {
+        name: 'Frozen Yogurt',
+        calories: 159,
+        fat: 6,
+        carbs: 24,
+        protein: 4,
+      },
+      {
+        name: 'Ice cream sandwich',
+        calories: 237,
+        fat: 9,
+        carbs: 37,
+        protein: 4.3,
+      },
+      {
+        name: 'Eclair',
+        calories: 262,
+        fat: 16,
+        carbs: 23,
+        protein: 6,
+      },
+      {
+        name: 'Cupcake',
+        calories: 305,
+        fat: 3.7,
+        carbs: 67,
+        protein: 4.3,
+      },
+      {
+        name: 'Gingerbread',
+        calories: 356,
+        fat: 16,
+        carbs: 49,
+        protein: 3.9,
+      },
+      {
+        name: 'Jelly bean',
+        calories: 375,
+        fat: 0,
+        carbs: 94,
+        protein: 0,
+      },
+      {
+        name: 'Lollipop',
+        calories: 392,
+        fat: 0.2,
+        carbs: 98,
+        protein: 0,
+      },
+      {
+        name: 'Honeycomb',
+        calories: 408,
+        fat: 3.2,
+        carbs: 87,
+        protein: 6.5,
+      },
+      {
+        name: 'Donut',
+        calories: 452,
+        fat: 25,
+        carbs: 51,
+        protein: 4.9,
+      },
+      {
+        name: 'KitKat',
+        calories: 518,
+        fat: 26,
+        carbs: 65,
+        protein: 7,
+      },
+    ]
+  }
+  function editItem (item) {
+    editedIndex.value = desserts.value.indexOf(item)
+    editedItem.value = Object.assign({}, item)
+    dialog.value = true
+  }
+  function deleteItem (item) {
+    editedIndex.value = desserts.value.indexOf(item)
+    editedItem.value = Object.assign({}, item)
+    dialogDelete.value = true
+  }
+  function deleteItemConfirm () {
+    desserts.value.splice(editedIndex.value, 1)
+    closeDelete()
+  }
+  function close () {
+    dialog.value = false
+    nextTick(() => {
+      editedItem.value = Object.assign({}, defaultItem.value)
+      editedIndex.value = -1
+    })
+  }
+  function closeDelete () {
+    dialogDelete.value = false
+    nextTick(() => {
+      editedItem.value = Object.assign({}, defaultItem.value)
+      editedIndex.value = -1
+    })
+  }
+  function save () {
+    if (editedIndex.value > -1) {
+      Object.assign(desserts.value[editedIndex.value], editedItem.value)
+    } else {
+      desserts.value.push(editedItem.value)
+    }
+    close()
+  }
+  watch(dialog, val => {
+    val || close()
+  })
+  watch(dialogDelete, val => {
+    val || closeDelete()
+  })
+  initialize()
+</script>
