@@ -148,7 +148,6 @@
     </template>
   </v-data-table>
 </template>
-
 <script setup>
   import { computed, nextTick, ref, watch } from 'vue'
 
