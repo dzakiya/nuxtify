@@ -255,7 +255,7 @@ const getProdukbyId = async (objekProduk) => {
   isUpdate.value = true;
 }
 
-const hapusDataProduk = async (product_id) => {
+const hapusDataProduk = async (product_id) => { 
   await axios.delete(url + "/products/" + product_id)
   alert("hapus data berhasil");
   getAllProduk();
