@@ -16,7 +16,7 @@
               </v-btn>
             </template>
 
-            <v-form @submit.prevent="handleSubmit">
+            <v-form @submit.prevent="addUser">
               <v-card>
                 <v-card-title>
                   <span class="text-h5">{{ formTitle }}</span>
@@ -95,6 +95,14 @@ const headers = [
   { title: "Actions", key: "actions", sortable: false },
 ]
 
+//trial buat post 
+const inputNip = ref ('')
+const inputNama_pegawai = ref ('')
+const inputNipb = ref('')
+const inputDepartemen = ref('')
+const inputAktif = ref(1)
+
+
 const newUser = ref({
   nip: '',
   nama_pegawai: '',
@@ -171,16 +179,26 @@ function save() {
 }
 
 //coba bikin tambah data user baru 
-async function addUser() {
+async function addUser(newUser) {
   const userBaru = {
     // title: newTodo.value.title,
     // description: newTodo.value.description,
-    nip: newUser.value.nip,
-    nama_pegawai: newUser.value.nama_pegawai,
-    nipb: newUser.value.nipb,
-    departemen: newUser.value.departemen,
-    aktif: 1,
-    completed: false, // default completed state
+    // nip: newUser.value.nip,
+    // nama_pegawai: newUser.value.nama_pegawai,
+    // nipb: newUser.value.nipb,
+    // departemen: newUser.value.departemen,
+    // aktif: 1,
+    // completed: false, // default completed state
+    // nip: newUser.nip,
+    // nama_pegawai: newUser.nama_pegawai,
+    // nipb: newUser.nipb,
+    // departemen: newUser.departemen,
+    // aktif: 1,
+    nip: inputNip.value,
+    nama_pegawai :inputNama_pegawai.value,
+    nipb : inputNipb.value,
+    departemen : inputDepartemen.value,
+    aktif : inputAktif.value,
   };
 
   try {
@@ -190,7 +208,10 @@ async function addUser() {
       body: JSON.stringify(userBaru),
     });
 
+    alert('User baru berhasil ditambahkan!')
     console.log('Todo successfully added!');
+    console.log(body);
+    console.log(userBaru);
     // Clear the form after successful submission (optional)
     newUser.value = {
       nip: '',
@@ -204,11 +225,6 @@ async function addUser() {
     // Handle errors appropriately
   }
 }
-
-async function handleSubmit() {
-  await addUser(newUser.value);
-}
-
 
 watch(dialog, val => {
   val || close()
