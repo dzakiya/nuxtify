@@ -1,117 +1,122 @@
-<!--https://vuetifyjs.com/en/components/data-tables/data-and-display/#multi-sort-->
 <template>
-  <v-card
-      title="Data SPT"
-      flat
-    >
-    <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :sort-by="[{ key: 'calories', order: 'asc' }, { key: 'fat', order: 'desc' }]"
-      multi-sort
-    ></v-data-table>
-</v-card>
-  </template>
-  <script>
-    export default {
-      data () {
-        return {
-          headers: [
-            {
-              title: 'Dessert (100g serving)',
-              align: 'start',
-              sortable: false,
-              key: 'name',
-            },
-            { title: 'Calories', key: 'calories' },
-            { title: 'Fat (g)', key: 'fat' },
-            { title: 'Carbs (g)', key: 'carbs' },
-            { title: 'Protein (g)', key: 'protein' },
-            { title: 'Iron (%)', key: 'iron' },
-          ],
-          desserts: [
-            {
-              name: 'Frozen Yogurt',
-              calories: 200,
-              fat: 6.0,
-              carbs: 24,
-              protein: 4.0,
-              iron: 1,
-            },
-            {
-              name: 'Ice cream sandwich',
-              calories: 200,
-              fat: 9.0,
-              carbs: 37,
-              protein: 4.3,
-              iron: 1,
-            },
-            {
-              name: 'Eclair',
-              calories: 300,
-              fat: 16.0,
-              carbs: 23,
-              protein: 6.0,
-              iron: 7,
-            },
-            {
-              name: 'Cupcake',
-              calories: 300,
-              fat: 3.7,
-              carbs: 67,
-              protein: 4.3,
-              iron: 8,
-            },
-            {
-              name: 'Gingerbread',
-              calories: 400,
-              fat: 16.0,
-              carbs: 49,
-              protein: 3.9,
-              iron: 16,
-            },
-            {
-              name: 'Jelly bean',
-              calories: 400,
-              fat: 0.0,
-              carbs: 94,
-              protein: 0.0,
-              iron: 0,
-            },
-            {
-              name: 'Lollipop',
-              calories: 400,
-              fat: 0.2,
-              carbs: 98,
-              protein: 0,
-              iron: 2,
-            },
-            {
-              name: 'Honeycomb',
-              calories: 400,
-              fat: 3.2,
-              carbs: 87,
-              protein: 6.5,
-              iron: 45,
-            },
-            {
-              name: 'Donut',
-              calories: 500,
-              fat: 25.0,
-              carbs: 51,
-              protein: 4.9,
-              iron: 22,
-            },
-            {
-              name: 'KitKat',
-              calories: 500,
-              fat: 26.0,
-              carbs: 65,
-              protein: 7,
-              iron: 6,
-            },
-          ],
-        }
-      },
-    }
-  </script>
+  <h3>TAMBAH DATA USER</h3>
+  <v-form @submit.prevent="addUser">
+    <v-combobox label="Jenis User" :items="['Umum', 'Dokter', 'Perawat']"></v-combobox>
+    <v-text-field v-model="newUser.nip" label="NIP" required></v-text-field>
+    <v-text-field v-model="newUser.nama_pegawai" label="Nama"></v-text-field>
+    <v-text-field v-model="newUser.nama_pegawai" label="Password"></v-text-field>
+    <v-combobox label="Roles" :items="pilihanRoles" item-title="rolename"
+        item-value="roleid" v-model="newUser.role"></v-combobox>
+    <v-btn type="submit" color="primary">Tambah User</v-btn>
+  </v-form>
+</template>
+
+<script setup>
+
+
+const pilihanRoles = ref();
+const newUser = ref({
+  nip: '',
+  nama_pegawai: '',
+  role: '', // Add role property to store selected role value
+});
+
+const { data: roles } = useFetch('/api/roles');
+
+//BERHASIL TAMBAH DATA
+async function addUser() {
+  try {
+    const user = await $fetch('/api/user', {
+      method: 'POST',
+      body: JSON.stringify({
+        nip: newUser.value.nip,
+        nama_pegawai: newUser.value.nama_pegawai,
+      }),
+      headers: { 'Content-Type': 'application/json' }, // Added for clarity
+    });
+
+    console.log('User berhasil ditambahkan!'); // Success message
+    alert('User berhasil ditambahkan!'); // Display alert
+
+    // Optionally, clear the form after successful submission
+    newUser.value = { nip: '', nama_pegawai: '' };
+  } catch (error) {
+    console.error('Kesalahan menambahkan user:', error);
+    alert('Error: ' + error.message); // Display error alert
+  }
+}
+
+onMounted(async () => {
+  await roles.value;
+
+  pilihanRoles.value = roles.value.map((role) => ({
+    value: role.roleid, // Replace with the actual ID property
+    text: role.rolename, // Replace with the actual property for role name
+  }));
+
+  console.log(pilihanRoles); // Verify data in console
+});
+
+
+// <!-- <template>
+//   <h3>TAMBAH DATA USER</h3>
+//   <v-form @submit.prevent="addUser">
+//     <v-combobox label="Jenis User" :items="['Umum', 'Dokter', 'Perawat']"></v-combobox>
+//     <v-text-field v-model="newUser.nip" label="NIP" required></v-text-field>
+//     <v-text-field v-model="newUser.nama_pegawai" label="Nama"></v-text-field>
+//     <v-text-field v-model="newUser.nama_pegawai" label="Password"></v-text-field>
+//     <v-combobox label="Roles" :items="computedPilihanRoles"></v-combobox>
+//     <v-btn type="submit" color="primary">Tambah User</v-btn>
+//   </v-form>
+
+// </template>
+
+// <script setup>
+
+// const pilihanRoles = ref([])
+// const newUser = ref({
+//   nip: '',
+//   nama_pegawai: '',
+// })
+
+// const { data: roles } = useFetch('/api/roles')
+
+// //BERHASIL TAMBAH DATA
+// async function addUser() {
+//   try {
+//     const user = await $fetch('/api/user', {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         nip: newUser.value.nip,
+//         nama_pegawai: newUser.value.nama_pegawai,
+//       }),
+//       headers: { 'Content-Type': 'application/json' }, // Added for clarity
+//     });
+
+//     console.log('User berhasil ditambahkan!'); // Success message
+//     alert('User berhasil ditambahkan!'); // Display alert
+
+//     // Optionally, clear the form after successful submission
+//     newUser.value = { nip: '', nama_pegawai: '' };
+//   } catch (error) {
+//     console.error('Kesalahan menambahkan user:', error);
+//     alert('Error: ' + error.message); // Display error alert
+//   }
+// }
+
+// const computedPilihanRoles = computed(() => {
+//   return Array.isArray(pilihanRoles.value) ? pilihanRoles.value : [];
+// });
+
+// onMounted(async () => {
+//   // Await both fetches to ensure data is available before use
+//   await roles.value;
+ 
+//   pilihanRoles.value = roles.value.map((role) => ({
+//     value: role.roleid, // Replace with the actual ID property from your API response
+//     text: role.rolename, // Replace with the actual property for role name
+//   }));
+
+//   console.log(pilihanRoles.value)
+// })
+// </script> -->
