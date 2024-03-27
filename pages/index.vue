@@ -215,6 +215,16 @@ async function addUser(newUser) {
   }
 }
 
+//function tambahUser
+function tambahUser() {
+  $fetch('/api/user', {
+    method: 'POST',
+    body: 
+    { hello: 'world '}
+    
+  })
+}
+
 watch(dialog, val => {
   val || close()
 })

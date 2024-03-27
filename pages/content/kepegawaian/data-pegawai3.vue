@@ -1,305 +1,245 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="desserts"
-    :sort-by="[{ key: 'calories', order: 'asc' }]"
-  >
-    <template v-slot:top>
-      <v-toolbar
-        flat
-      >
-        <v-toolbar-title>My CRUD</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog
-          v-model="dialog"
-          max-width="500px"
-        >
-          <template v-slot:activator="{ props }">
-            <v-btn
-              class="mb-2"
-              color="primary"
-              dark
-              v-bind="props"
-            >
-              New Item
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
+  <v-card class="mx-auto">
+    <v-data-table :headers="headers" :items="dataUser" :items-per-page="8">
+      <!--judul tabel dan button new item di pojok kanan-->
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>Data User SIM RS</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
 
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    md="4"
-                    sm="6"
-                  >
-                    <v-text-field
-                      v-model="editedItem.name"
-                      label="Dessert name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    md="4"
-                    sm="6"
-                  >
-                    <v-text-field
-                      v-model="editedItem.calories"
-                      label="Calories"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    md="4"
-                    sm="6"
-                  >
-                    <v-text-field
-                      v-model="editedItem.fat"
-                      label="Fat (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    md="4"
-                    sm="6"
-                  >
-                    <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Carbs (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    md="4"
-                    sm="6"
-                  >
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Protein (g)"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="close"
-              >
-                Cancel
+          <v-dialog v-model="dialog" max-width="500px">
+            <template v-slot:activator="{ props }">
+              <v-btn class="mb-2" color="primary" dark v-bind="props">
+                TAMBAH DATA
               </v-btn>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="save"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-    <template v-slot:item.actions="{ item }">
-      <v-icon
-        class="me-2"
-        size="small"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        size="small"
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn
-        color="primary"
-        @click="initialize"
-      >
-        Reset
-      </v-btn>
-    </template>
-  </v-data-table>
+            </template>
+
+            <v-form @submit.prevent="addUser">
+              <v-card>
+                <v-card-title>
+                  <span class="text-h5">{{ formTitle }}</span>
+                </v-card-title>
+
+                <v-card-text>
+                  <v-container>
+                    <v-text-field v-model="newUser.nip" label="NIP"></v-text-field>
+                    <v-text-field v-model="newUser.nama_pegawai" label="Nama Pegawai"></v-text-field>
+                    <v-text-field v-model="newUser.nipb" label="NIP / NIPTTK"></v-text-field>
+                    <v-text-field v-model="newUser.departemen" label="Departemen"></v-text-field>
+                    <v-text-field v-model="newUser.aktif" label="Aktif"></v-text-field>
+                    <v-btn color="blue-darken-1" variant="text" type="submit">
+                      SIMPAN
+                    </v-btn>
+                  </v-container>
+                </v-card-text>
+
+                <!-- <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue-darken-1" variant="text" @click="close">
+                  BATAL
+                </v-btn>
+                <v-btn color="blue-darken-1" variant="text" type="submit">
+                  SIMPAN
+                </v-btn>
+              </v-card-actions> -->
+              </v-card>
+            </v-form>
+          </v-dialog>
+
+          <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-card-title class="text-h5">Apakah anda yakin menghapus item ini?</v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Batal</v-btn>
+                <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+        </v-toolbar>
+      </template>
+      <!--end of v-slot top-->
+
+      <!--actions kolom edit dan delete -->
+      <template v-slot:item.actions="{ item }">
+        <v-icon class="me-2" size="small" @click="detaillUser(item)">
+          mdi-account-details
+        </v-icon>
+        <v-icon class="me-2" size="small" @click="editItem(item)">
+          mdi-pencil
+        </v-icon>
+        <v-icon size="small" @click="deleteItem(item)">
+          mdi-delete
+        </v-icon>
+      </template>
+      <!--end of actions-->
+    </v-data-table>
+  </v-card>
 </template>
-<script setup>
-  import { computed, nextTick, ref, watch } from 'vue'
 
-  const dialog = ref(false)
-  const dialogDelete = ref(false)
-  const headers = ref([
-    {
-      title: 'Dessert (100g serving)',
-      align: 'start',
-      sortable: false,
-      key: 'name',
-    },
-    { title: 'Calories', key: 'calories' },
-    { title: 'Fat (g)', key: 'fat' },
-    { title: 'Carbs (g)', key: 'carbs' },
-    { title: 'Protein (g)', key: 'protein' },
-    { title: 'Actions', key: 'actions', sortable: false },
-  ])
-  const desserts = ref([])
-  const editedIndex = ref(-1)
-  const editedItem = ref({
-    name: '',
-    calories: 0,
-    fat: 0,
-    carbs: 0,
-    protein: 0,
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const userDetail = ref("")
+const dataUser = ref([])
+const headers = [
+  { title: "NIP", value: "nip", sortable: true },
+  { title: "Nama Pegawai", value: "nama_pegawai", sortable: true },
+  { title: "Role", value: "rolename", sortable: true },
+  { title: "Nama Unit", value: "nama_unit", sortable: true },
+  { title: "Nama Grup Unit", value: "nama_grupunit", sortable: true },
+  { title: "Actions", key: "actions", sortable: false },
+]
+
+//trial buat post 
+const inputNip = ref ('')
+const inputNama_pegawai = ref ('')
+const inputNipb = ref('')
+const inputDepartemen = ref('')
+const inputAktif = ref(1)
+
+
+const newUser = ref({
+  nip: '',
+  nama_pegawai: '',
+  nipb: '',
+  departemen: '',
+  aktif: 0,
+});
+
+//tambahan
+const dialog = ref(false)
+const dialogDelete = ref(false)
+const editedIndex = ref(-1)
+const editedItem = ref({
+  nip: '',
+  nama_pegawai: '',
+  nipb: '',
+  departemen: '',
+  aktif: 0,
+})
+const defaultItem = ref({
+  nip: '',
+  nama_pegawai: '',
+  nipb: '',
+  departemen: '',
+  aktif: 1,
+})
+const formTitle = computed(() => {
+  return editedIndex.value === -1 ? 'TAMBAH DATA' : 'EDIT DATA'
+})
+//end of tambahan
+
+const { data: userSimRS } = useFetch('/api/user/userdata')
+const { data: userDetailData } = useFetch('/api/user') // Assuming userDetail endpoint
+
+
+//tambahan
+function editItem(item) {
+  editedIndex.value = desserts.value.indexOf(item)
+  editedItem.value = Object.assign({}, item)
+  dialog.value = true
+}
+function deleteItem(item) {
+  editedIndex.value = desserts.value.indexOf(item)
+  editedItem.value = Object.assign({}, item)
+  dialogDelete.value = true
+}
+function deleteItemConfirm() {
+  desserts.value.splice(editedIndex.value, 1)
+  closeDelete()
+}
+function close() {
+  dialog.value = false
+  nextTick(() => {
+    editedItem.value = Object.assign({}, defaultItem.value)
+    editedIndex.value = -1
   })
-  const defaultItem = ref({
-    name: '',
-    calories: 0,
-    fat: 0,
-    carbs: 0,
-    protein: 0,
+}
+function closeDelete() {
+  dialogDelete.value = false
+  nextTick(() => {
+    editedItem.value = Object.assign({}, defaultItem.value)
+    editedIndex.value = -1
   })
-  const formTitle = computed(() => {
-    return editedIndex.value === -1 ? 'New Item' : 'Edit Item'
-  })
-  function initialize () {
-    desserts.value = [
-      {
-        name: 'Frozen Yogurt',
-        calories: 159,
-        fat: 6,
-        carbs: 24,
-        protein: 4,
-      },
-      {
-        name: 'Ice cream sandwich',
-        calories: 237,
-        fat: 9,
-        carbs: 37,
-        protein: 4.3,
-      },
-      {
-        name: 'Eclair',
-        calories: 262,
-        fat: 16,
-        carbs: 23,
-        protein: 6,
-      },
-      {
-        name: 'Cupcake',
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-      },
-      {
-        name: 'Gingerbread',
-        calories: 356,
-        fat: 16,
-        carbs: 49,
-        protein: 3.9,
-      },
-      {
-        name: 'Jelly bean',
-        calories: 375,
-        fat: 0,
-        carbs: 94,
-        protein: 0,
-      },
-      {
-        name: 'Lollipop',
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-      },
-      {
-        name: 'Honeycomb',
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-      },
-      {
-        name: 'Donut',
-        calories: 452,
-        fat: 25,
-        carbs: 51,
-        protein: 4.9,
-      },
-      {
-        name: 'KitKat',
-        calories: 518,
-        fat: 26,
-        carbs: 65,
-        protein: 7,
-      },
-    ]
+}
+
+//untuk tambah data
+function save() {
+  if (editedIndex.value > -1) {
+    Object.assign(desserts.value[editedIndex.value], editedItem.value)
+  } else {
+    desserts.value.push(editedItem.value)
   }
-  function editItem (item) {
-    editedIndex.value = desserts.value.indexOf(item)
-    editedItem.value = Object.assign({}, item)
-    dialog.value = true
+  close()
+}
+
+//coba bikin tambah data user baru 
+async function addUser(newUser) {
+  const userBaru = {
+    // title: newTodo.value.title,
+    // description: newTodo.value.description,
+    // nip: newUser.value.nip,
+    // nama_pegawai: newUser.value.nama_pegawai,
+    // nipb: newUser.value.nipb,
+    // departemen: newUser.value.departemen,
+    // aktif: 1,
+    // completed: false, // default completed state
+    // nip: newUser.nip,
+    // nama_pegawai: newUser.nama_pegawai,
+    // nipb: newUser.nipb,
+    // departemen: newUser.departemen,
+    // aktif: 1,
+    nip: inputNip.value,
+    nama_pegawai :inputNama_pegawai.value,
+    nipb : inputNipb.value,
+    departemen : inputDepartemen.value,
+    aktif : inputAktif.value,
+  };
+
+  try {
+    await fetch({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userBaru),
+    });
+
+    alert('User baru berhasil ditambahkan!')
+    console.log('Todo successfully added!');
+    console.log(body);
+    console.log(userBaru);
+    // Clear the form after successful submission (optional)
+    newUser.value = {
+      nip: '',
+      nama_pegawai: '',
+      nipb: '',
+      departemen: '',
+      aktif: 0,
+    };
+  } catch (error) {
+    console.error('Error adding todo:', error);
+    // Handle errors appropriately
   }
-  function deleteItem (item) {
-    editedIndex.value = desserts.value.indexOf(item)
-    editedItem.value = Object.assign({}, item)
-    dialogDelete.value = true
-  }
-  function deleteItemConfirm () {
-    desserts.value.splice(editedIndex.value, 1)
-    closeDelete()
-  }
-  function close () {
-    dialog.value = false
-    nextTick(() => {
-      editedItem.value = Object.assign({}, defaultItem.value)
-      editedIndex.value = -1
-    })
-  }
-  function closeDelete () {
-    dialogDelete.value = false
-    nextTick(() => {
-      editedItem.value = Object.assign({}, defaultItem.value)
-      editedIndex.value = -1
-    })
-  }
-  function save () {
-    if (editedIndex.value > -1) {
-      Object.assign(desserts.value[editedIndex.value], editedItem.value)
-    } else {
-      desserts.value.push(editedItem.value)
-    }
-    close()
-  }
-  watch(dialog, val => {
-    val || close()
-  })
-  watch(dialogDelete, val => {
-    val || closeDelete()
-  })
-  initialize()
+}
+
+watch(dialog, val => {
+  val || close()
+})
+watch(dialogDelete, val => {
+  val || closeDelete()
+})
+//end of tambahan
+
+onMounted(async () => {
+  // Await both fetches to ensure data is available before use
+  await userSimRS.value
+  await userDetailData.value
+
+  dataUser.value = userSimRS.value // Assuming userSimRS has user data
+  userDetail.value = userDetailData.value // Assuming userDetailData has detail data
+})
 </script>

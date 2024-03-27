@@ -1,40 +1,39 @@
 <template>
-  <form @submit.prevent="handleSubmit">
-    <input type="text" v-model="nip" placeholder="NIP" required>
-    <input type="text" v-model="nama" placeholder="Nama" required>
-    <input type="text" v-model="departemen" placeholder="Departemen" required>
-    <button type="submit">Kirim</button>
-  </form>
+  <h3>TAMBAH DATA USER</h3>
+  <v-form @submit.prevent="addUser">
+    <v-text-field v-model="newUser.nip" label="NIP" required></v-text-field>
+    <v-text-field v-model="newUser.nama_pegawai" label="Nama"></v-text-field>
+    <v-btn type="submit" color="primary">Tambah User</v-btn>
+  </v-form>
 </template>
 
 <script setup>
-const nip = ref('');
-const nama = ref('');
-const departemen = ref('');
 
-function handleSubmit(event) {
-  const formData = new FormData(event.target);
+const newUser = ref({
+  nip: '',
+  nama_pegawai: '',
+})
 
-  const data = {
-    nip: formData.get('nip'),
-    nama: formData.get('nama'),
-    departemen: formData.get('departemen'),
-  };
-
-  contactForm(data); // Pass data object directly
-}
-
-async function contactForm(formData: any) {
+//BERHASIL TAMBAH DATA
+async function addUser() {
   try {
-    await $fetch('/api/user', {
+    const user = await $fetch('/api/user', {
       method: 'POST',
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        nip: newUser.value.nip,
+        nama_pegawai: newUser.value.nama_pegawai,
+      }),
+      headers: { 'Content-Type': 'application/json' }, // Added for clarity
     });
 
-    console.log('Data berhasil terkirim'); // Update success message
+    console.log('User berhasil ditambahkan!'); // Success message
+    alert('User berhasil ditambahkan!'); // Display alert
+
+    // Optionally, clear the form after successful submission
+    newUser.value = { nip: '', nama_pegawai: '' };
   } catch (error) {
-    console.error('Error:', error);
-    // Implement more specific error handling here
+    console.error('Kesalahan menambahkan user:', error);
+    alert('Error: ' + error.message); // Display error alert
   }
 }
 </script>
