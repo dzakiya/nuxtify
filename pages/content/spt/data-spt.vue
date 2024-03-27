@@ -5,8 +5,12 @@
     <v-text-field v-model="newUser.nip" label="NIP" required></v-text-field>
     <v-text-field v-model="newUser.nama_pegawai" label="Nama"></v-text-field>
     <v-text-field v-model="newUser.nama_pegawai" label="Password"></v-text-field>
-    <v-combobox label="Roles" :items="pilihanRoles" item-title="rolename"
-        item-value="roleid" v-model="newUser.role"></v-combobox>
+    <v-combobox label="Roles" :items="roles" item-title="rolename"
+        item-value="roleid"></v-combobox>
+    <v-combobox label="Unit" :items="unit" item-title="nama_unit"
+        item-value="kode_unit"></v-combobox>
+    <v-text-field :items="unit" item-title="nama_unit"
+        item-value="kode_unit" label="Departemen"></v-text-field>
     <v-btn type="submit" color="primary">Tambah User</v-btn>
   </v-form>
 </template>
@@ -15,6 +19,7 @@
 
 
 const pilihanRoles = ref();
+const piihanUnit = ref();
 const newUser = ref({
   nip: '',
   nama_pegawai: '',
@@ -22,6 +27,7 @@ const newUser = ref({
 });
 
 const { data: roles } = useFetch('/api/roles');
+const { data: unit } = useFetch('/api/unit');
 
 //BERHASIL TAMBAH DATA
 async function addUser() {
@@ -48,12 +54,19 @@ async function addUser() {
 
 onMounted(async () => {
   await roles.value;
+  await unit.value;
 
   pilihanRoles.value = roles.value.map((role) => ({
     value: role.roleid, // Replace with the actual ID property
     text: role.rolename, // Replace with the actual property for role name
   }));
 
+  pilihanUnit.value = roles.value.map((unitt) => ({
+    value: unitt.kode_unit, // Replace with the actual ID property
+    text: unitt.nama_unit, // Replace with the actual property for role name
+  }));
+
+  console.log(piihanUnit);
   console.log(pilihanRoles); // Verify data in console
 });
 
