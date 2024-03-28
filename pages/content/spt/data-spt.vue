@@ -84,7 +84,7 @@ const pilihanUnit = ref();
 const pilihanDokter = ref();
 const pilihanPerawat = ref();
 
-const selectedDokter = ref({});
+const selectedDokter = ref({fill:"Pilih salah satu"});
 const selectedPerawat = ref({});
 const selectedRoles = ref({});
 const selectedUnit = ref({});
