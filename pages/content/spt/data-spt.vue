@@ -27,7 +27,11 @@
               :items="dokter"
               item-title="namadokter"
               item-value="kddokter"
-            ></v-combobox>
+            >
+            <template v-slot:no-data>
+              <p class="ml-3 mt-3">[Slot] Sorry, we dont have data for you!</p>
+            </template>
+            </v-combobox>
             <v-combobox
               v-if="pilihanJenisUser === 'Perawat'"
               v-model="selectedPerawat"

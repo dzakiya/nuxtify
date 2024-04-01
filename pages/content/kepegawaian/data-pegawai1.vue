@@ -234,10 +234,10 @@ watch(dialogDelete, val => {
 })
 //end of tambahan
 
-onMounted(async () => {
+onMounted(() => { //trial dihapus async dan await
   // Await both fetches to ensure data is available before use
-  await userSimRS.value
-  await userDetailData.value
+  userSimRS.value
+  userDetailData.value
 
   dataUser.value = userSimRS.value // Assuming userSimRS has user data
   userDetail.value = userDetailData.value // Assuming userDetailData has detail data

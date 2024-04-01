@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
     .join('m_unit', 'm_unit.kode_unit', '=', 'm_login.kdunit')
 
     return user; // Return data products
+    
   } catch (error) {
     console.error('Error fetching data user:', error);
     // Handle errors appropriately (e.g., return a custom error response)

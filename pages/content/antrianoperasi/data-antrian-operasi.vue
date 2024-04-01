@@ -154,12 +154,12 @@ function detailItem(item) {
   dialog.value = true;
 }
 
-function editItem(item) {
+function editItem(item) { //function update
   editedIndex.value = dataUser.value.indexOf(item);
   editedItem.value = Object.assign({}, item);
   dialog.value = true;
 }
-function deleteItem(item) {
+function deleteItem(item) { //function delete
   editedIndex.value = deserts.value.indexOf(item);
   editedItem.value = Object.assign({}, item);
   dialog.value = true;
@@ -182,7 +182,7 @@ function closeDelete() {
     editedIndex.value = -1;
   });
 }
-function save() {
+function save() { //function add data
   if (editedIndex.value > -1) {
     Object.assign(dataUser.value[editedIndex.value], editedItem.value);
   } else {
