@@ -28,9 +28,6 @@
               item-title="namadokter"
               item-value="kddokter"
             >
-            <template v-slot:no-data>
-              <p class="ml-3 mt-3">[Slot] Sorry, we dont have data for you!</p>
-            </template>
             </v-combobox>
             <v-combobox
               v-if="pilihanJenisUser === 'Perawat'"
@@ -40,7 +37,11 @@
               item-title="nama"
               item-value="idperawat"
             ></v-combobox>
-            <v-text-field v-model="newUser.pwd" label="Password" type="password"></v-text-field>
+            <v-text-field
+              v-model="newUser.pwd"
+              label="Password"
+              type="password"
+            ></v-text-field>
           </v-sheet>
         </v-col>
 
@@ -80,83 +81,122 @@
     </v-form>
   </v-container>
 
-    <!--MENAMPILKAN TABEL-->
+  <!--MENAMPILKAN TABEL-->
   <v-card class="mx-auto">
-    <v-data-table :headers="headers" :items="dataUser" :items-per-page="8">
+    <v-data-table
+      :headers="headers"
+      :items="dataUser"
+      :items-per-page="8"
+      :search="search"
+    >
       <!--judul tabel dan button new item di pojok kanan-->
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Data User SIM RS</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-
-
+          <v-text-field
+            v-model="search"
+            density="compact"
+            label="Search"
+            prepend-inner-icon="mdi-magnify"
+            variant="solo-filled"
+            flat
+            hide-details
+            single-line
+          ></v-text-field>
+          <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ props }">
               <v-btn class="mb-2" color="primary" dark v-bind="props">
                 TAMBAH DATA
               </v-btn>
             </template>
-
-            <v-form>
+         
               <v-card>
                 <v-card-title>
                   <span class="text-h5">{{ formTitle }}</span>
                 </v-card-title>
 
                 <v-card-text>
-                  <v-container>
-                    <v-text-field v-model="newUser.nip" label="NIP"></v-text-field>
-                    <v-text-field v-model="newUser.nama_pegawai" label="Nama Pegawai"></v-text-field>
-                    <v-text-field v-model="newUser.nipb" label="NIP / NIPTTK"></v-text-field>
-                    <v-text-field v-model="newUser.departemen" label="Departemen"></v-text-field>
-                    <v-text-field v-model="newUser.aktif" label="Aktif"></v-text-field>
-                    <v-btn color="blue-darken-1" variant="text" type="submit">
-                      SIMPAN
-                    </v-btn>
-                  </v-container>
-                </v-card-text>
+              <v-container>
+                
+              
+                    <v-text-field
+                      v-model="editedItem.nip"
+                      label="NIP"
+                    ></v-text-field>
+           
+                    <v-text-field
+                      v-model="editedItem.nama_pegawai"
+                      label="Nama Pegawaik"
+                    ></v-text-field>
+         
+                    <v-text-field
+                      v-model="editedItem.rolename"
+                      label="NIP / NIPTTK"
+                    ></v-text-field>
+       
+                    <v-text-field
+                      v-model="editedItem.nama_unit"
+                      label="Departemen"
+                    ></v-text-field>
+            
+                    <v-text-field
+                      v-model="editedItem.nama_grupunit"
+                      label="Aktif"
+                    ></v-text-field>
+          
+           
+              </v-container>
+            </v-card-text>
 
-                <!-- <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue-darken-1" variant="text" @click="close">
-                  BATAL
-                </v-btn>
-                <v-btn color="blue-darken-1" variant="text" type="submit">
-                  SIMPAN
-                </v-btn>
-              </v-card-actions> -->
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue-darken-1" variant="text" @click="close">
+                BATAL
+              </v-btn>
+              <v-btn color="blue-darken-1" variant="text" @click="save">
+                SIMPAN
+              </v-btn>
+            </v-card-actions>
+
               </v-card>
-            </v-form>
           </v-dialog>
 
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
-              <v-card-title class="text-h5">Apakah anda yakin menghapus item ini?</v-card-title>
+              <v-card-title class="text-h5"
+                >Apakah anda yakin menghapus item ini?</v-card-title
+              >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Batal</v-btn>
-                <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
+                <v-btn color="blue-darken-1" variant="text" @click="closeDelete"
+                  >Batal</v-btn
+                >
+                <v-btn
+                  color="blue-darken-1"
+                  variant="text"
+                  @click="deleteUserConfirm"
+                  >OK</v-btn
+                >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
           </v-dialog>
-
         </v-toolbar>
       </template>
       <!--end of v-slot top-->
 
       <!--actions kolom edit dan delete -->
       <template v-slot:item.actions="{ item }">
-        <v-icon class="me-2" size="small" @click="detaillUser(item)">
+        <v-icon class="me-2" size="small" @click="detailUser(item)">
           mdi-account-details
         </v-icon>
-        <v-icon class="me-2" size="small" @click="updateUser(item)">
+        <v-icon class="me-2" size="small" @click="editUser(item)">
           mdi-pencil
         </v-icon>
-        <v-icon size="small" @click="deleteItem(item)">
-          mdi-delete
-        </v-icon>
+        <v-icon size="small" @click="deleteUser(item)"> mdi-delete </v-icon>
       </template>
       <!--end of actions-->
     </v-data-table>
@@ -175,6 +215,29 @@ const selectedPerawat = ref();
 const selectedRoles = ref();
 const selectedUnit = ref();
 
+//untuk dialog
+const dialog = ref(false);
+const dialogDelete = ref(false);
+const editedIndex = ref(-1);
+const editedItem = ref({
+  name: "",
+  calories: 0,
+  fat: 0,
+  carbs: 0,
+  protein: 0,
+});
+const defaultItem = ref({
+  name: "",
+  calories: 0,
+  fat: 0,
+  carbs: 0,
+  protein: 0,
+});
+const formTitle = computed(() => {
+  return editedIndex.value === -1 ? "New Data" : "Edit Data";
+});
+//end of dialog
+
 const newUser = ref({
   nip: "",
   nama_pegawai: "",
@@ -185,8 +248,9 @@ const newUser = ref({
   nipb: "",
 });
 
-const userDetail = ref("")
-const dataUser = ref([])
+const search = ref();
+const userDetail = ref("");
+const dataUser = ref([]);
 const headers = [
   { title: "NIP", value: "nip", sortable: true },
   { title: "Nama Pegawai", value: "nama_pegawai", sortable: true },
@@ -194,14 +258,14 @@ const headers = [
   { title: "Nama Unit", value: "nama_unit", sortable: true },
   { title: "Nama Grup Unit", value: "nama_grupunit", sortable: true },
   { title: "Actions", key: "actions", sortable: false },
-]
+];
 
-const { data: userSimRS } = useFetch('/api/user/userdata')
-const { data: userDetailData } = useFetch('/api/user') // Assuming userDetail endpoint
-const { data: roles } = useFetch("/api/roles");
-const { data: unit } = useFetch("/api/unit");
-const { data: dokter } = useFetch("/api/dokter");
-const { data: perawat } = useFetch("/api/perawat");
+const { data: userSimRS } = useFetch("/api/user/userdata");
+const { data: userDetailData } = useFetch("/api/user"); // Assuming userDetail endpoint
+const { data: roles } = useFetch("/api/roles"); //dropdown pilihan roles
+const { data: unit } = useFetch("/api/unit"); //dropdown pilihan unit
+const { data: dokter } = useFetch("/api/dokter"); //dropdown pilihan dokter
+const { data: perawat } = useFetch("/api/perawat"); //dropdown pilihan perawat
 
 //BERHASIL TAMBAH DATA
 async function addUser() {
@@ -210,15 +274,26 @@ async function addUser() {
       method: "POST",
       body: JSON.stringify({
         nip: newUser.value.nip,
-        nama_pegawai: pilihanJenisUser.value === "Umum" ? newUser.value.nama_pegawai : (pilihanJenisUser.value === "Dokter" ? selectedDokter.value.namadokter : selectedPerawat.value.nama),
-        kdperawat: pilihanJenisUser.value === "Perawat" ? selectedPerawat.value.idperawat : null,
-        kddokter: pilihanJenisUser.value === "Dokter" ? selectedDokter.value.kddokter : null,
+        nama_pegawai:
+          pilihanJenisUser.value === "Umum"
+            ? newUser.value.nama_pegawai
+            : pilihanJenisUser.value === "Dokter"
+            ? selectedDokter.value.namadokter
+            : selectedPerawat.value.nama,
+        kdperawat:
+          pilihanJenisUser.value === "Perawat"
+            ? selectedPerawat.value.idperawat
+            : null,
+        kddokter:
+          pilihanJenisUser.value === "Dokter"
+            ? selectedDokter.value.kddokter
+            : null,
         pwd: newUser.value.pwd,
         roles: selectedRoles.value.roleid,
         kdunit: selectedUnit.value.kode_unit,
         departemen: selectedUnit.value.nama_unit,
         nipb: newUser.value.nipb,
-        aktif: 1
+        aktif: 1,
       }),
       headers: { "Content-Type": "application/json" }, // Added for clarity
     });
@@ -227,29 +302,48 @@ async function addUser() {
     alert("User berhasil ditambahkan!"); // Display alert
 
     // Optionally, clear the form after successful submission
-    newUser.value = { nip: "", nama_pegawai: "", pwd: "", roles: "", kdunit:"", departemen:"", nipb: "" };
+    newUser.value = {
+      nip: "",
+      nama_pegawai: "",
+      pwd: "",
+      roles: "",
+      kdunit: "",
+      departemen: "",
+      nipb: "",
+    };
   } catch (error) {
     console.error("Kesalahan menambahkan user:", error);
     alert("Error: " + error.message); // Display error alert
   }
 }
 
-//COBA UPDATE USER
+//COBA UPDATE USER -> belum berhasil
 async function updateUser(nip) {
   try {
     const user = await $fetch(`/api/user${nip}`, {
       method: "PUT",
       body: JSON.stringify({
         nip: newUser.value.nip,
-        nama_pegawai: pilihanJenisUser.value === "Umum" ? newUser.value.nama_pegawai : (pilihanJenisUser.value === "Dokter" ? selectedDokter.value.namadokter : selectedPerawat.value.nama),
-        kdperawat: pilihanJenisUser.value === "Perawat" ? selectedPerawat.value.idperawat : null,
-        kddokter: pilihanJenisUser.value === "Dokter" ? selectedDokter.value.kddokter : null,
+        nama_pegawai:
+          pilihanJenisUser.value === "Umum"
+            ? newUser.value.nama_pegawai
+            : pilihanJenisUser.value === "Dokter"
+            ? selectedDokter.value.namadokter
+            : selectedPerawat.value.nama,
+        kdperawat:
+          pilihanJenisUser.value === "Perawat"
+            ? selectedPerawat.value.idperawat
+            : null,
+        kddokter:
+          pilihanJenisUser.value === "Dokter"
+            ? selectedDokter.value.kddokter
+            : null,
         pwd: newUser.value.pwd,
         roles: selectedRoles.value.roleid,
         kdunit: selectedUnit.value.kode_unit,
         departemen: selectedUnit.value.nama_unit,
         nipb: newUser.value.nipb,
-        aktif: 1
+        aktif: 1,
       }),
       headers: { "Content-Type": "application/json" },
     });
@@ -264,19 +358,68 @@ async function updateUser(nip) {
   }
 }
 
-//COBA GET USER BY NIP
+//contoh CRUD di dokumentasi Vuetify
+//tambahan
+function detailUser(item) {
+  editedIndex.value = userDetail.value.indexOf(item); //dari API api/user
+  editedItem.value = Object.assign({}, item);
+  dialog.value = true;
+}
 
+function editUser(item) {
+  editedIndex.value = dataUser.value.indexOf(item); 
+  editedItem.value = Object.assign({}, item);
+  dialog.value = true;
+}
+function deleteUser(item) {
+  editedIndex.value = dataUser.value.indexOf(item);
+  editedItem.value = Object.assign({}, item);
+  dialogDelete.value = true;
+}
+function deleteUserConfirm() {
+  dataUser.value.splice(editedIndex.value, 1);
+  closeDelete();
+}
+function close() {
+  dialog.value = false;
+  nextTick(() => {
+    editedItem.value = Object.assign({}, defaultItem.value);
+    editedIndex.value = -1;
+  });
+}
+function closeDelete() {
+  dialogDelete.value = false;
+  nextTick(() => {
+    editedItem.value = Object.assign({}, defaultItem.value);
+    editedIndex.value = -1;
+  });
+}
+function save() {
+  if (editedIndex.value > -1) {
+    Object.assign(dataUser.value[editedIndex.value], editedItem.value);
+  } else {
+    dataUser.value.push(editedItem.value);
+  }
+  close();
+}
+watch(dialog, (val) => {
+  val || close();
+});
+watch(dialogDelete, (val) => {
+  val || closeDelete();
+});
+//end of contoh
 
 onMounted(async () => {
   await roles.value;
   await unit.value;
   await dokter.value;
-  await perawat.value; 
-  await userSimRS.value
-  await userDetailData.value
+  await perawat.value;
+  await userSimRS.value;
+  await userDetailData.value;
 
-  dataUser.value = userSimRS.value // Assuming userSimRS has user data
-  userDetail.value = userDetailData.value // Assuming userDetailData has detail data
+  dataUser.value = userSimRS.value; // Assuming userSimRS has user data
+  userDetail.value = userDetailData.value; // Assuming userDetailData has detail data
 
   pilihanRoles.value = roles.value.map((role) => ({
     value: role.roleid, // Replace with the actual ID property
@@ -293,7 +436,7 @@ onMounted(async () => {
     text: dokterr.namadokter,
   }));
 
-  pilihanPerawat.value = perawat.value.map((perawat) => ({
+  pilihanPerawat.value = perawat.value.map((perawatt) => ({
     value: perawatt.idperawat,
     text: perawatt.nama,
   }));
