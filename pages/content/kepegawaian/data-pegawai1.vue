@@ -305,12 +305,12 @@ async function editUser(item) {
     const user = await $fetch(`/api/user/${item.nip}`, {
       method: "PUT",
       body: JSON.stringify({
-        nama_pegawai: item.nama_pegawai, // Assuming this is reactive and reflects changes
-        roles: item.roles.value.roleid, // Access the roleid property
-        kdunit: item.kdunit.value.kode_unit, // Access the kode_unit property
-        departemen: item.kdunit.value.nama_unit, // Access the nama_unit property
-        nipb: item.nipb, // Assuming this is reactive and reflects changes
-        aktif: item.aktif, // Assuming this is reactive and reflects changes
+        nama_pegawai: item.nama_pegawai,
+        roles: item.roles.value.roleid,
+        kdunit: item.kdunit.value.kode_unit,
+        departemen: item.kdunit.value.nama_unit,
+        nipb: item.nipb,
+        aktif: item.aktif,
       }),
       headers: { "Content-Type": "application/json" },
     });
