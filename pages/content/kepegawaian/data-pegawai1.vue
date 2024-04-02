@@ -1,7 +1,7 @@
 <template>
   <h3>FORM DATA USER</h3>
   <v-container>
-    <v-form @submit.prevent="addUser">
+    <v-form @submit.prevent="addUser(userSimRS)">
       <v-row no-gutters>
         <v-col>
           <v-sheet class="pa-2 ma-2">
@@ -250,7 +250,7 @@ const inputNIPB = ref("");
 const inputStatus = ref("");
 
 //BERHASIL TAMBAH DATA
-async function addUser() {
+async function addUser(userSimRS) {
   try {
     const user = await $fetch("/api/user", {
       method: "POST",
@@ -282,7 +282,7 @@ async function addUser() {
 
     console.log("User berhasil ditambahkan!"); // Success message
     alert("User berhasil ditambahkan!"); // Display alert
-
+    const { data: userSimRS } = useFetch("/api/user/userdetail");
     // Optionally, clear the form after successful submission
     newUser.value = {
       nip: "",
@@ -306,11 +306,12 @@ async function editUser(item) {
       method: "PUT",
       body: JSON.stringify({
         nama_pegawai: item.nama_pegawai,
-        roles: item.roles.value.roleid,
-        kdunit: item.kdunit.value.kode_unit,
-        departemen: item.kdunit.value.nama_unit,
-        nipb: item.nipb,
-        aktif: item.aktif,
+        // nama_pegawai: item.nama_pegawai,
+        // roles: item.roles.value.roleid,
+        // kdunit: item.kdunit.value.kode_unit,
+        // departemen: item.kdunit.value.nama_unit,
+        // nipb: item.nipb,
+        // aktif: item.aktif,
       }),
       headers: { "Content-Type": "application/json" },
     });
