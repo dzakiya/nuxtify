@@ -88,7 +88,7 @@
       :items-per-page="8"
       :search="search"
     >
-      <!--judul tabel dan button new item di pojok kanan-->
+      <!--judul tabel, search dan button new item di pojok kanan-->
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Data User SIM RS</v-toolbar-title>
@@ -106,146 +106,87 @@
           ></v-text-field>
           <v-spacer></v-spacer>
 
-          <!--Pop up Dialog Tambah Data & Edit Data-->
+          <!--Start Pop up Dialog Tambah Data & Edit Data dari contoh CRUD Vuetify-->
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ props }">
               <v-btn class="mb-2" color="primary" dark v-bind="props">
                 TAMBAH DATA
               </v-btn>
-            </template>         
-              <v-card>
-                <v-card-title>
-                  <span class="text-h5">{{ formTitle }}</span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container>       
-                    <v-text-field
-                      v-model="editedItem.nip"
-                      label="NIP"
-                    ></v-text-field>           
-                    <v-text-field
-                      v-model="editedItem.nama_pegawai"
-                      label="Nama Pegawai"
-                    ></v-text-field>        
-                    <v-text-field
-                      v-model="editedItem.nipb"
-                      label="NIP / NIPTTK"
-                    ></v-text-field>       
-                    <v-text-field
-                      v-model="editedItem.rolename"
-                      label="Role"
-                    ></v-text-field>          
-                    <v-text-field
-                      v-model="editedItem.nama_unit"
-                      label="Unit"
-                    ></v-text-field>  
-                    <v-text-field
-                      v-model="editedItem.aktif"
-                      label="Status"
-                    ></v-text-field>          
-              </v-container>
-            </v-card-text>
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">{{ formTitle }}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-text-field
+                    v-model="editedItem.nip"
+                    label="NIP"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="editedItem.nama_pegawai"
+                    label="Nama Pegawai"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="editedItem.nipb"
+                    label="NIP / NIPTTK"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="editedItem.rolename"
+                    label="Role"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="editedItem.nama_unit"
+                    label="Unit"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="editedItem.aktif"
+                    label="Status"
+                  ></v-text-field>
+                </v-container>
+              </v-card-text>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="text" @click="close">
-                BATAL
-              </v-btn>
-              <v-btn color="blue-darken-1" variant="text" @click="save">
-                SIMPAN
-              </v-btn>
-            </v-card-actions>
-              </v-card>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue-darken-1" variant="text" @click="close">
+                  BATAL
+                </v-btn>
+                <v-btn color="blue-darken-1" variant="text" @click="save">
+                  SIMPAN
+                </v-btn>
+              </v-card-actions>
+            </v-card>
           </v-dialog>
           <!--End of Pop up Dialog Tambah Data & Edit Data-->
 
-          <!--Pop up dialog Edit User-->
+          <!--Start Pop up dialog Edit User-->
           <v-dialog v-model="dialogEdit" max-width="500px">
-          <v-card>
-            <v-container>
-    <v-form @submit.prevent="addUser">
-      <v-row no-gutters>
-        <v-col>
-          <v-sheet class="pa-2 ma-2">
-            <v-combobox
-              v-model="pilihanJenisUser"
-              label="Jenis User"
-              :items="['Umum', 'Dokter', 'Perawat']"
-            ></v-combobox>
-            <v-text-field
-              v-model="newUser.nip"
-              label="NIP"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-if="pilihanJenisUser === 'Umum'"
-              v-model="newUser.nama_pegawai"
-              label="Nama"
-            ></v-text-field>
-            <v-combobox
-              v-if="pilihanJenisUser === 'Dokter'"
-              v-model="selectedDokter"
-              label="Dokter"
-              :items="dokter"
-              item-title="namadokter"
-              item-value="kddokter"
-            >
-            </v-combobox>
-            <v-combobox
-              v-if="pilihanJenisUser === 'Perawat'"
-              v-model="selectedPerawat"
-              label="Perawat"
-              :items="perawat"
-              item-title="nama"
-              item-value="idperawat"
-            ></v-combobox>
-            <v-text-field
-              v-model="newUser.pwd"
-              label="Password"
-              type="password"
-            ></v-text-field>
-          </v-sheet>
-        </v-col>
-
-        <v-col>
-          <v-sheet class="pa-2 ma-2">
-            <v-combobox
-              label="Roles"
-              v-model="selectedRoles"
-              :items="roles"
-              item-title="rolename"
+            <v-card>
+              <v-container>
+                {{ dataDetail}}
+                <v-form @submit.prevent="editUser" v-for="item in dataDetail">
+                  <v-text-field v-model="item.nip" label="NIP" readonly="true"></v-text-field>
+                  <v-text-field v-model="item.nama_pegawai" label="Nama Pegawai"></v-text-field>
+                  <v-text-field v-model="item.roles" label="Roles"></v-text-field>
+                  <v-select
+  label="Roles"
+  :items="roles"
+  v-model="item.roles"
+  item-title="rolename"
               item-value="roleid"
-            ></v-combobox>
-            <v-combobox
-              label="Unit"
-              v-model="selectedUnit"
-              :items="unit"
-              item-title="nama_unit"
-              item-value="kode_unit"
-            ></v-combobox>
-            <!-- <v-text-field
-              :items="unit"
-              item-title="nama_unit"
-              item-value="kode_unit"
-              label="Departemen"
-            ></v-text-field> -->
-            <v-text-field
-              v-model="newUser.nipb"
-              label="NIP/NIPTT"
-              required
-            ></v-text-field>
-            <v-btn type="submit" color="primary">Simpan</v-btn>
-          </v-sheet>
-        </v-col>
-        <v-responsive width="100%"></v-responsive>
-      </v-row>
-    </v-form>
-  </v-container>
-  </v-card>
+></v-select>
+                  <v-text-field v-model="item.kdunit" label="Kode Unit"></v-text-field>
+                  <v-text-field v-model="item.departemen" label="Departemen"></v-text-field>
+                  <v-text-field v-model="item.nipb" label="NIP/NIPTT"></v-text-field>
+                  <v-text-field v-model="item.aktif" label="Status"></v-text-field>
+                  <v-btn type="submit" color="primary">Simpan</v-btn>
+                </v-form>
+              </v-container>
+            </v-card>
           </v-dialog>
           <!--End of Pop up dialog Edit User-->
 
-          <!--Pop up dialog Delete User-->
+          <!--Start Pop up dialog Delete User-->
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5"
@@ -268,46 +209,47 @@
           </v-dialog>
           <!--End of Pop up Dialog Delete User-->
 
-          
-          <!--Pop up Dialog Detail-->
+          <!--Start Pop up Dialog Detail-->
           <v-dialog v-model="dialogDetail" :items="dataDetail" max-width="800">
-      <v-card>
-        <v-container>
-          <!--{{ dataDetail }} -->
+            <v-form @submit.prevent="getUserbyNip">
+              <v-card>
+                <v-container>
+                  <!--{{ dataDetail }} -->
 
-          <v-table>
-            <thead>
-              <tr>
-                <th class="text-left">NIP</th>
-                <th class="text-left">Nama</th>
-                <th class="text-left">NIPB</th>
-                <th class="text-left">Roles</th>
-                <th class="text-left">Kode Unit</th>
-                <th class="text-left">Departemen</th>
-                <th class="text-left">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in dataDetail">
-                <td>{{ item.nip }}</td>
-                <td>{{ item.nama_pegawai }}</td>
-                <td>{{ item.nipb }}</td>
-                <td>{{ item.roles }}</td>
-                <td>{{ item.kdunit }}</td>
-                <td>{{ item.departemen }}</td>
-                <td>{{ item.aktif }}</td>
-              </tr>
-            </tbody>
-          </v-table>
-        </v-container>
-      </v-card>
-    </v-dialog>
-          <!--End Dialog Detail-->
+                  <v-table>
+                    <thead>
+                      <tr>
+                        <th class="text-left">NIP</th>
+                        <th class="text-left">Nama</th>
+                        <th class="text-left">NIPB</th>
+                        <th class="text-left">Roles</th>
+                        <th class="text-left">Kode Unit</th>
+                        <th class="text-left">Departemen</th>
+                        <th class="text-left">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="item in dataDetail">
+                        <td>{{ item.nip }}</td>
+                        <td>{{ item.nama_pegawai }}</td>
+                        <td>{{ item.nipb }}</td>
+                        <td>{{ item.roles }}</td>
+                        <td>{{ item.kdunit }}</td>
+                        <td>{{ item.departemen }}</td>
+                        <td>{{ item.aktif }}</td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-container>
+              </v-card>
+            </v-form>
+          </v-dialog>
+          <!--End of Pop up Dialog Detail-->
         </v-toolbar>
       </template>
-      <!--end of v-slot top-->
+      <!--End of v-slot top-->
 
-      <!--actions kolom lihat detail, edit dan delete -->
+      <!--Start actions kolom lihat detail, edit dan delete -->
       <template v-slot:item.actions="{ item }">
         <v-icon class="me-2" size="small" @click="showDialogDetail(item.nip)">
           mdi-account-details
@@ -317,7 +259,7 @@
         </v-icon>
         <v-icon size="small" @click="deleteUser(item)"> mdi-delete </v-icon>
       </template>
-      <!--end of actions-->
+      <!--End of actions-->
     </v-data-table>
   </v-card>
 </template>
@@ -339,14 +281,15 @@ const dialog = ref(false);
 const dialogDelete = ref(false);
 const dialogDetail = ref(false); //berhasil
 const dialogEdit = ref(false);
+
 const editedIndex = ref(-1);
 const editedItem = ref({
-  nip:"",
-  nama_pegawai:"",
-  nipb:"",
-  rolename:"",
-  nama_unit:"",
-  aktif:""
+  nip: "",
+  nama_pegawai: "",
+  nipb: "",
+  rolename: "",
+  nama_unit: "",
+  aktif: "",
 });
 const defaultItem = ref({});
 const formTitle = computed(() => {
@@ -384,6 +327,15 @@ const { data: roles } = useFetch("/api/roles"); //dropdown pilihan roles
 const { data: unit } = useFetch("/api/unit"); //dropdown pilihan unit
 const { data: dokter } = useFetch("/api/dokter"); //dropdown pilihan dokter
 const { data: perawat } = useFetch("/api/perawat"); //dropdown pilihan perawat
+
+//untuk form edit 
+const inputNip = ref('');
+const inputNamapegawai = ref('');
+const inputRoles = ref('');
+const inputKodeUnit = ref('');
+const inputDepartemen = ref('');
+const inputNIPB = ref('');
+const inputStatus = ref('');
 
 //BERHASIL TAMBAH DATA
 async function addUser() {
@@ -436,7 +388,7 @@ async function addUser() {
 }
 
 //COBA UPDATE USER -> belum berhasil
-async function updateUser(nip) {
+async function editUser(nip) {
   try {
     const user = await $fetch(`/api/user${nip}`, {
       method: "PUT",
@@ -461,7 +413,7 @@ async function updateUser(nip) {
         kdunit: selectedUnit.value.kode_unit,
         departemen: selectedUnit.value.nama_unit,
         nipb: newUser.value.nipb,
-        aktif: 1, //menambahkan data user baru, kolom aktif langsung diisi 1 
+        aktif: 1, //menambahkan data user baru, kolom aktif langsung diisi 1
       }),
       headers: { "Content-Type": "application/json" },
     });
@@ -482,7 +434,10 @@ async function getUserbyNip(nip) {
     const response = await fetch(`/api/user/userbynip/?nip=${nip}`);
     if (!response.ok) {
       // Handle API errors gracefully (e.g., display an error message)
-      console.error(`Error fetching user details for NIP ${nip}:`, await response.text());
+      console.error(
+        `Error fetching user details for NIP ${nip}:`,
+        await response.text()
+      );
       return; // Exit if API call fails
     }
 
@@ -491,48 +446,6 @@ async function getUserbyNip(nip) {
   } catch (error) {
     console.error("Error fetching user details:", error);
     // Handle other potential errors during the process
-  }
-}
-
-async function editUser(nip) {
-  try {
-    const response = await fetch(`/api/user/${nip}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        nip: newUser.nip, // Assuming newUser.nip contains the updated NIP
-        nama_pegawai:
-          pilihanJenisUser === "Umum"
-            ? newUser.nama_pegawai
-            : pilihanJenisUser === "Dokter"
-              ? selectedDokter.namadokter
-              : selectedPerawat.nama,
-        kdperawat: pilihanJenisUser === "Perawat" ? selectedPerawat.idperawat : null,
-        kddokter: pilihanJenisUser === "Dokter" ? selectedDokter.kddokter : null,
-        pwd: newUser.pwd, // Assuming newUser.pwd contains the updated password
-        roles: selectedRoles.roleid,
-        kdunit: selectedUnit.kode_unit,
-        departemen: selectedUnit.nama_unit,
-        nipb: newUser.nipb, // Assuming newUser.nipb contains the updated NIP/NIPTT
-        aktif: 1, // Assuming aktif represents user activation status (1 for active)
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (!response.ok) {
-      // Handle errors appropriately
-      const errorData = await response.json();
-      throw new Error(`Error updating user: ${errorData.message || 'Unexpected error'}`);
-    }
-
-    console.log("User successfully updated!");
-    alert("User successfully updated!");
-
-    // Optionally, update the local data or fetch updated data from the server
-    // to reflect the changes in the UI
-
-  } catch (error) {
-    console.error("Error updating user:", error);
-    alert("Error: " + error.message);
   }
 }
 
@@ -568,21 +481,27 @@ function save() {
   close();
 }
 
-function showDialogDetail(nip) { //berhasil menampilkan dialog detail by nip
-      dialogDetail.value = true;
-      getUserbyNip(nip);
+function showDialogDetail(nip) {
+  //berhasil menampilkan dialog detail by nip
+  dialogDetail.value = true;
+  getUserbyNip(nip);
 }
 
 function showDialogEdit(nip) {
-    dialogEdit.value = true;
-    editUser(nip);
+  dialogEdit.value = true;
+  getUserbyNip(nip);
 }
 
 function closeDialogDetail() {
   dialogDetail.value = false;
 }
 
+function closeDialogEdit() {
+  dialogEdit.value = false;
+}
+
 watch(dialog, (val) => {
+  //dialog edit & tambah
   val || close();
 });
 watch(dialogDelete, (val) => {
@@ -594,8 +513,8 @@ watch(dialogDetail, (val) => {
 });
 
 watch(dialogEdit, (val) => {
-  val || close();
-})
+  val || closeDialogEdit();
+});
 
 //end of contoh
 
