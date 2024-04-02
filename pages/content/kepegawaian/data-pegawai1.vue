@@ -5,73 +5,32 @@
       <v-row no-gutters>
         <v-col>
           <v-sheet class="pa-2 ma-2">
-            <v-combobox
-              v-model="pilihanJenisUser"
-              label="Jenis User"
-              :items="['Umum', 'Dokter', 'Perawat']"
-            ></v-combobox>
-            <v-text-field
-              v-model="newUser.nip"
-              label="NIP"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-if="pilihanJenisUser === 'Umum'"
-              v-model="newUser.nama_pegawai"
-              label="Nama"
-            ></v-text-field>
-            <v-combobox
-              v-if="pilihanJenisUser === 'Dokter'"
-              v-model="selectedDokter"
-              label="Dokter"
-              :items="dokter"
-              item-title="namadokter"
-              item-value="kddokter"
-            >
+            <v-combobox v-model="pilihanJenisUser" label="Jenis User"
+              :items="['Umum', 'Dokter', 'Perawat']"></v-combobox>
+            <v-text-field v-model="newUser.nip" label="NIP" required></v-text-field>
+            <v-text-field v-if="pilihanJenisUser === 'Umum'" v-model="newUser.nama_pegawai" label="Nama"></v-text-field>
+            <v-combobox v-if="pilihanJenisUser === 'Dokter'" v-model="selectedDokter" label="Dokter" :items="dokter"
+              item-title="namadokter" item-value="kddokter">
             </v-combobox>
-            <v-combobox
-              v-if="pilihanJenisUser === 'Perawat'"
-              v-model="selectedPerawat"
-              label="Perawat"
-              :items="perawat"
-              item-title="nama"
-              item-value="idperawat"
-            ></v-combobox>
-            <v-text-field
-              v-model="newUser.pwd"
-              label="Password"
-              type="password"
-            ></v-text-field>
+            <v-combobox v-if="pilihanJenisUser === 'Perawat'" v-model="selectedPerawat" label="Perawat" :items="perawat"
+              item-title="nama" item-value="idperawat"></v-combobox>
+            <v-text-field v-model="newUser.pwd" label="Password" type="password"></v-text-field>
           </v-sheet>
         </v-col>
 
         <v-col>
           <v-sheet class="pa-2 ma-2">
-            <v-combobox
-              label="Roles"
-              v-model="selectedRoles"
-              :items="roles"
-              item-title="rolename"
-              item-value="roleid"
-            ></v-combobox>
-            <v-combobox
-              label="Unit"
-              v-model="selectedUnit"
-              :items="unit"
-              item-title="nama_unit"
-              item-value="kode_unit"
-            ></v-combobox>
+            <v-combobox label="Roles" v-model="selectedRoles" :items="roles" item-title="rolename"
+              item-value="roleid"></v-combobox>
+            <v-combobox label="Unit" v-model="selectedUnit" :items="unit" item-title="nama_unit"
+              item-value="kode_unit"></v-combobox>
             <!-- <v-text-field
               :items="unit"
               item-title="nama_unit"
               item-value="kode_unit"
               label="Departemen"
             ></v-text-field> -->
-            <v-text-field
-              v-model="newUser.nipb"
-              label="NIP/NIPTT"
-              required
-            ></v-text-field>
+            <v-text-field v-model="newUser.nipb" label="NIP/NIPTT" required></v-text-field>
             <v-btn type="submit" color="primary">Simpan</v-btn>
           </v-sheet>
         </v-col>
@@ -82,28 +41,15 @@
 
   <!--MENAMPILKAN TABEL-->
   <v-card class="mx-auto">
-    <v-data-table
-      :headers="headers"
-      :items="dataUser"
-      :items-per-page="8"
-      :search="search"
-    >
+    <v-data-table :headers="headers" :items="dataUser" :items-per-page="8" :search="search">
       <!--judul tabel, search dan button new item di pojok kanan-->
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Data User SIM RS</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            density="compact"
-            label="Search"
-            prepend-inner-icon="mdi-magnify"
-            variant="solo-filled"
-            flat
-            hide-details
-            single-line
-          ></v-text-field>
+          <v-text-field v-model="search" density="compact" label="Search" prepend-inner-icon="mdi-magnify"
+            variant="solo-filled" flat hide-details single-line></v-text-field>
           <v-spacer></v-spacer>
 
           <!--Start Pop up Dialog Tambah Data & Edit Data dari contoh CRUD Vuetify-->
@@ -119,30 +65,12 @@
               </v-card-title>
               <v-card-text>
                 <v-container>
-                  <v-text-field
-                    v-model="editedItem.nip"
-                    label="NIP"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="editedItem.nama_pegawai"
-                    label="Nama Pegawai"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="editedItem.nipb"
-                    label="NIP / NIPTTK"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="editedItem.rolename"
-                    label="Role"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="editedItem.nama_unit"
-                    label="Unit"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="editedItem.aktif"
-                    label="Status"
-                  ></v-text-field>
+                  <v-text-field v-model="editedItem.nip" label="NIP"></v-text-field>
+                  <v-text-field v-model="editedItem.nama_pegawai" label="Nama Pegawai"></v-text-field>
+                  <v-text-field v-model="editedItem.nipb" label="NIP / NIPTTK"></v-text-field>
+                  <v-text-field v-model="editedItem.rolename" label="Role"></v-text-field>
+                  <v-text-field v-model="editedItem.nama_unit" label="Unit"></v-text-field>
+                  <v-text-field v-model="editedItem.aktif" label="Status"></v-text-field>
                 </v-container>
               </v-card-text>
 
@@ -161,22 +89,15 @@
 
           <!--Start Pop up dialog Edit User-->
           <v-dialog v-model="dialogEdit" max-width="500px">
-            <v-card>
+            <v-card title="Edit User">
               <v-container>
-                {{ dataDetail}}
                 <v-form @submit.prevent="editUser" v-for="item in dataDetail">
                   <v-text-field v-model="item.nip" label="NIP" readonly="true"></v-text-field>
                   <v-text-field v-model="item.nama_pegawai" label="Nama Pegawai"></v-text-field>
-                  <v-text-field v-model="item.roles" label="Roles"></v-text-field>
-                  <v-select
-  label="Roles"
-  :items="roles"
-  v-model="item.roles"
-  item-title="rolename"
-              item-value="roleid"
-></v-select>
-                  <v-text-field v-model="item.kdunit" label="Kode Unit"></v-text-field>
-                  <v-text-field v-model="item.departemen" label="Departemen"></v-text-field>
+                  <v-select label="Roles" :items="roles" v-model="item.roles" item-title="rolename"
+                    item-value="roleid"></v-select>
+                  <v-select label="Nama Unit" :items="unit" v-model="item.kdunit" item-title="nama_unit"
+                    item-value="kode_unit"></v-select>
                   <v-text-field v-model="item.nipb" label="NIP/NIPTT"></v-text-field>
                   <v-text-field v-model="item.aktif" label="Status"></v-text-field>
                   <v-btn type="submit" color="primary">Simpan</v-btn>
@@ -189,20 +110,11 @@
           <!--Start Pop up dialog Delete User-->
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
-              <v-card-title class="text-h5"
-                >Apakah anda yakin menghapus item ini?</v-card-title
-              >
+              <v-card-title class="text-h5">Apakah anda yakin menghapus item ini?</v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue-darken-1" variant="text" @click="closeDelete"
-                  >Batal</v-btn
-                >
-                <v-btn
-                  color="blue-darken-1"
-                  variant="text"
-                  @click="deleteUserConfirm"
-                  >OK</v-btn
-                >
+                <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Batal</v-btn>
+                <v-btn color="blue-darken-1" variant="text" @click="deleteUserConfirm">OK</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
@@ -328,14 +240,14 @@ const { data: unit } = useFetch("/api/unit"); //dropdown pilihan unit
 const { data: dokter } = useFetch("/api/dokter"); //dropdown pilihan dokter
 const { data: perawat } = useFetch("/api/perawat"); //dropdown pilihan perawat
 
-//untuk form edit 
-const inputNip = ref('');
-const inputNamapegawai = ref('');
-const inputRoles = ref('');
-const inputKodeUnit = ref('');
-const inputDepartemen = ref('');
-const inputNIPB = ref('');
-const inputStatus = ref('');
+//untuk form edit
+const inputNip = ref("");
+const inputNamapegawai = ref("");
+const inputRoles = ref("");
+const inputKodeUnit = ref("");
+const inputDepartemen = ref("");
+const inputNIPB = ref("");
+const inputStatus = ref("");
 
 //BERHASIL TAMBAH DATA
 async function addUser() {
@@ -348,8 +260,8 @@ async function addUser() {
           pilihanJenisUser.value === "Umum"
             ? newUser.value.nama_pegawai
             : pilihanJenisUser.value === "Dokter"
-            ? selectedDokter.value.namadokter
-            : selectedPerawat.value.nama,
+              ? selectedDokter.value.namadokter
+              : selectedPerawat.value.nama,
         kdperawat:
           pilihanJenisUser.value === "Perawat"
             ? selectedPerawat.value.idperawat
@@ -388,32 +300,17 @@ async function addUser() {
 }
 
 //COBA UPDATE USER -> belum berhasil
-async function editUser(nip) {
+async function editUser(item) {
   try {
-    const user = await $fetch(`/api/user${nip}`, {
+    const user = await $fetch(`/api/user/${item.nip}`, {
       method: "PUT",
       body: JSON.stringify({
-        nip: newUser.value.nip,
-        nama_pegawai:
-          pilihanJenisUser.value === "Umum"
-            ? newUser.value.nama_pegawai
-            : pilihanJenisUser.value === "Dokter"
-            ? selectedDokter.value.namadokter
-            : selectedPerawat.value.nama,
-        kdperawat:
-          pilihanJenisUser.value === "Perawat"
-            ? selectedPerawat.value.idperawat
-            : null,
-        kddokter:
-          pilihanJenisUser.value === "Dokter"
-            ? selectedDokter.value.kddokter
-            : null,
-        pwd: newUser.value.pwd,
-        roles: selectedRoles.value.roleid,
-        kdunit: selectedUnit.value.kode_unit,
-        departemen: selectedUnit.value.nama_unit,
-        nipb: newUser.value.nipb,
-        aktif: 1, //menambahkan data user baru, kolom aktif langsung diisi 1
+        nama_pegawai: item.nama_pegawai, // Assuming this is reactive and reflects changes
+        roles: item.roles.value.roleid, // Access the roleid property
+        kdunit: item.kdunit.value.kode_unit, // Access the kode_unit property
+        departemen: item.kdunit.value.nama_unit, // Access the nama_unit property
+        nipb: item.nipb, // Assuming this is reactive and reflects changes
+        aktif: item.aktif, // Assuming this is reactive and reflects changes
       }),
       headers: { "Content-Type": "application/json" },
     });
@@ -427,6 +324,36 @@ async function editUser(nip) {
     alert("Error: " + error.message); // Display error alert
   }
 }
+// async function editUser(item) {
+//   try {
+//     const user = await $fetch(`/api/user/${item.nip}`, {
+//       method: "PUT",
+//       body: JSON.stringify({
+//         // nama_pegawai: item.nama_pegawai.value.nama_pegawai,
+//         // roles: item.roles.value.roleid,
+//         // kdunit: item.kdunit.value.kode_unit,
+//         // departemen: item.kdunit.value.nama_unit,
+//         // nipb: item.nipb.value.nipb,
+//         // aktif: item.aktif.value.aktif, 
+//         nama_pegawai: item.value.nama_pegawai,
+//         roles: item.roles.value.roleid,
+//         kdunit: item.kdunit.value.kode_unit,
+//         departemen: item.kdunit.value.nama_unit,
+//         nipb: item.value.nipb,
+//         aktif: item.value.aktif, 
+//       }),
+//       headers: { "Content-Type": "application/json" },
+//     });
+
+//     console.log("User berhasil diperbarui!"); // Success message
+//     alert("User berhasil diperbarui!"); // Display alert
+
+//     // Optionally, reload the page or fetch updated data
+//   } catch (error) {
+//     console.error("Kesalahan memperbarui user:", error);
+//     alert("Error: " + error.message); // Display error alert
+//   }
+// }
 
 //BERHASIL MENAMPILKAN GETUSER BY NIP
 async function getUserbyNip(nip) {

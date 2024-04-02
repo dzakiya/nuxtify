@@ -5,26 +5,56 @@
       <v-col cols="12">
         <v-data-table :headers="headers" :items="dataStudent">
           <template v-slot:top>
-            <v-toolbar flat> </v-toolbar>
+            <v-toolbar flat>
+              <v-toolbar-title>My CRUD</v-toolbar-title>
+
+              <v-divider class="mx-4" inset vertical></v-divider>
+
+              <v-spacer></v-spacer>
+
+              <v-btn class="mb-2" color="primary" @click="showdialogtambah()"> TAMBAH DATA </v-btn>
+            </v-toolbar>
           </template>
 
           <template v-slot:item.actions="{ item }">
-            <v-icon
-              class="me-2"
-              size="small"
-              @click="showdialogdetail(item.nip)"
-              >mdi-account</v-icon
-            >
-            <v-icon class="me-2" size="small" @click="showdialogedit()"
-              >mdi-pencil</v-icon
-            >
-            <v-icon class="me-2" size="small" @click="showdialogdelete()"
-              >mdi-delete</v-icon
-            >
+            <v-icon class="me-2" size="small" @click="showdialogdetail(item.nip)">mdi-account</v-icon>
+            <v-icon class="me-2" size="small" @click="showdialogedit()">mdi-pencil</v-icon>
+            <v-icon class="me-2" size="small" @click="showdialogdelete()">mdi-delete</v-icon>
           </template>
         </v-data-table>
       </v-col>
     </v-row>
+
+    <v-dialog v-model="dialogtambah" max-width="800">
+      <v-card>
+        <v-container>
+          <h2>FORM TAMBAH DATA</h2>
+          {{ dataDetail }}
+          <v-row>
+            <v-col cols="12" sm="10">
+              <v-text-field label="ID"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="10">
+              <v-text-field label="NAME"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="10">
+              <v-text-field label="CLASS"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="10">
+              <v-text-field label="MARK"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="10">
+              <v-text-field label="GENDER"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue-darken-1" variant="text" @click="close"> BATAL </v-btn>
+            <v-btn color="blue-darken-1" variant="text" @click="tambahData()"> SIMPAN </v-btn>
+          </v-card-actions>
+        </v-container>
+      </v-card>
+    </v-dialog>
 
     <v-dialog v-model="dialogdetail" :items="dataDetail" max-width="800">
       <v-card>
@@ -116,6 +146,15 @@ export default {
     userSimRS: "",
     dataStudent: [],
     dataDetail: [],
+
+    tambahData:[{
+        id: '',
+        name: '',
+        class: '',
+        mark: '',
+        gender: '',
+      }],
+
     headers: [
       //untuk tabel utama
       { title: "NIP", key: "nip" },
@@ -130,12 +169,17 @@ export default {
       { title: "DEPARTEMEN", key: "departemen" },
       { title: "ROLE", key: "roles" },
     ],
+    dialogtambah : false,
     dialogdetail: false,
     dialogedit: false,
     dialogdelete: false,
   }),
 
   methods: {
+    showdialogtambah(){
+        this.dialogtambah = true
+        this.getDataUserDetail(name); 
+      },
     showdialogdetail(nip) {
       console.log(this);
       this.dialogdetail = true;
@@ -164,11 +208,51 @@ export default {
           this.dataDetail = userSimRS.body;
         });
     },
+
+    async tambahData(){
+        await fetch('/api/user',{
+          method: 'POST',
+          body: JSON.stringify({
+            id: tambahData.value.id,
+            name: tambahData.value.name,
+            class: tambahData.value.class,
+            mark: tambahData.value.mark,
+            gender: tambahData.value.gender,
+          })
+
+        })
+
+    },
+
+
+    // async putDataUser(name) {
+    //   await fetch(/api/student/studentdetail/?name=+name,{
+    //     method:'PUT',
+    //     body:{
+    //       id:'',
+    //       name:'',
+    //       class:'',
+    //       mark:'',
+    //       gender:'',
+    //     }
+    //   })
+    //     .then((response) => response.json())
+    //     .then((userSimRS) => {
+    //       this.dataDetail = userSimRS.body;
+    //     }); 
+    // },
   },
+
+
 
   created() {
     this.getDataUser();
     this.getDataUserDetail();
   },
+
 };
+
+
+
+
 </script>
